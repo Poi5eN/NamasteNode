@@ -1,0 +1,14 @@
+SDLC
+
+WATERFALL MODEL
+
+REQUIREMENTS GATHERING(PM)
+Design(Senior Engineer) => Development(SDE1,SDE2) => Testing(SDET) => Deployment(DevOps) => Maintenance
+
+MONOLITHIC
+
+MICROSERVICES
+
+NAMASTEDEV.COM
+
+DEVTINDER
