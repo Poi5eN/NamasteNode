@@ -1,19 +1,60 @@
 const express = require("express");
+const bcrypt = require("bcrypt");
 const connectDB = require("./config/database");
 const app = express();
 const User = require("./models/user");
+const {validateSignUpData} = require("./utils/validation");
 
 app.use(express.json());
 
 app.post("/signup", async (req, res) => {
-  //   Creating a new instance of the User model
-  const user = new User(req.body);
+  try{
+    // Validate the signup data
+    validateSignUpData(req);
 
-  try {
+    // Destructuring the request body
+    const { firstName, lastName, emailId, password } = req.body;
+
+    // Hashing and Encrypting the password
+    const passwordHash = await bcrypt.hash(password, 10);
+    console.log("Password Hash:", passwordHash);
+
+    // Creating a new instance of the User model
+    const user = new User({
+      firstName,
+      lastName,
+      emailId,
+      password: passwordHash,
+    });
+
+    // Saving the user to the database
     await user.save();
     res.send("User Added successfully!");
   } catch (err) {
-    res.status(400).send("Error saving the user:" + err.message);
+    // If there is an error, send a 400 status with the error message
+    res.status(400).send("Error saving the user: " + err.message);
+  }
+});
+
+
+app.post("/login", async (req, res) => {
+  const { emailId, password } = req.body;
+  try {
+    // Find the user by email
+    const user = await User.find({ emailId: emailId });
+    if (user.length === 0) {
+      return res.status(404).send("Invalid Credentials!");
+    }
+    // Compare the provided password with the stored hashed password
+    const isPasswordValid = await bcrypt.compare(password, user[0].password);
+    if (!isPasswordValid) {
+      return res.status(401).send("Invalid Credentials!");
+    }
+    // If the password is valid, send a success response
+    res.send("Login successful");
+  } catch (err) {
+    // If there is an error, send a 400 status with the error message
+    res.status(400).send("Error during login: " + err.message);
   }
 });
 
