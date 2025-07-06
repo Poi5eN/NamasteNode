@@ -1,0 +1,25 @@
+{
+  "name": "devtinder",
+  "version": "1.0.0",
+  "description": "tinder for devs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "javascript",
+    "backend"
+  ],
+  "author": "Poi5eN",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.1",
+    "validator": "^13.15.15"
+  }
+}
